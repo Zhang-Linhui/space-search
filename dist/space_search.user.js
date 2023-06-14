@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       space_search
 // @namespace  https://github.com/Zhang-Linhui
-// @version    1.0.0
+// @version    1.0.1
 // @author     zlh
 // @icon       https://static.hdslb.com/images/favicon.ico
 // @updateURL  https://gitee.com/ZLH2021/bili-space-search/raw/main/dist/space_search.user.js
@@ -402,7 +402,6 @@
     bindBiliButtonClick();
   };
   $(function() {
-    console.log(window.location.href);
     let biliURL = window.location.href;
     if (biliURL.startsWith("https://space.bilibili.com/")) {
       let hostUid = gongjv.give.getDid();

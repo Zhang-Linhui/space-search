@@ -13,7 +13,7 @@ export default defineConfig({
         icon: 'https://static.hdslb.com/images/favicon.ico',
         namespace: 'https://github.com/Zhang-Linhui',
         include: [/^http?s:\/\/space\.bilibili\.com\/[\d]+\/dynamic$/],
-        version: "1.0.0",
+        version: "1.0.1",
         author: "zlh",
         updateURL: "https://gitee.com/ZLH2021/bili-space-search/raw/main/dist/space_search.user.js"
       },

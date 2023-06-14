@@ -7,7 +7,6 @@ import { gongjv } from "./service/SpaceSearch"
 import loadHostSpaceBili from './component/host-space-bili'
 
 $(function () {
-    console.log(window.location.href)
     let biliURL = window.location.href;
     if (biliURL.startsWith("https://space.bilibili.com/")) {
         let hostUid = gongjv.give.getDid()
