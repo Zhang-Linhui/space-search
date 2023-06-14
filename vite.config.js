@@ -15,6 +15,7 @@ export default defineConfig({
         include: [/^http?s:\/\/space\.bilibili\.com\/[\d]+\/dynamic$/],
         version: "1.0.0",
         author: "zlh",
+        updateURL: "https://gitee.com/ZLH2021/bili-space-search/raw/main/dist/space_search.user.js"
       },
       build: {
         externalGlobals: [

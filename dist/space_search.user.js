@@ -2,8 +2,9 @@
 // @name       space_search
 // @namespace  https://github.com/Zhang-Linhui
 // @version    1.0.0
-// @author     monkey
+// @author     zlh
 // @icon       https://static.hdslb.com/images/favicon.ico
+// @updateURL  https://gitee.com/ZLH2021/bili-space-search/raw/main/dist/space_search.user.js
 // @include    /^http?s:\/\/space\.bilibili\.com\/[\d]+\/dynamic$/
 // @resource   bootstrap/dist/css/bootstrap.min.css  https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css
 // @grant      GM_getResourceText
