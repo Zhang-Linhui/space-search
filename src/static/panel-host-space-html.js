@@ -1,4 +1,4 @@
-import "./bili-button.css"
+import "./panel-host-space.css"
 
 export default function () {
     let htmlHostSpace =
@@ -13,7 +13,7 @@ export default function () {
                         </ul>
                     </div>
                     <div class="input-group">
-                        <input type="number" class="form-control text-center" placeholder="请输入动态号" aria-label="数字输入框"
+                        <input type="number" class="form-control text-center" id="space-dynamic-input" placeholder="请输入动态号" aria-label="数字输入框"
                             aria-describedby="basic-addon1">
                     </div>
                     <div class="btn-group btn-group-sm btn-group-center" role="group">

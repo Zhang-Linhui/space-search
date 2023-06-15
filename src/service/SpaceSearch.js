@@ -206,10 +206,11 @@ class SpaceManage extends base_mob.blhttps {
      * @param {string} hd 搜索的空间主人uid
      * @param {number} ld
      */
-    constructor(cPM = () => { console.log("执行完毕") }, hd = gongjv.give.getUid(), ld = 60) {
+    constructor(cPM = ({ }) => { console.log("执行完毕") }, riDynamic = "678854211508633640", hd = gongjv.give.getUid(), ld = 60) {
         super()
         this.lastday = ld
         this.hid = hd
+        this.rid = riDynamic
         this.#spHandle = this.#mainloop()
         this.callbackProcessingMethod = cPM
 
@@ -219,7 +220,7 @@ class SpaceManage extends base_mob.blhttps {
      */
     async *#mainloop() {
         let off = "0"
-        let dalist = new this.dataArrange(this.lastday)
+        let dalist = new this.dataArrange(this.rid)
         try {
             while (true) {
 
@@ -238,8 +239,7 @@ class SpaceManage extends base_mob.blhttps {
             this.packageli = dalist.data;
             console.log("找到了")
             console.log(this.packageli);
-            console.log(this.callbackProcessingMethod)
-            this.callbackProcessingMethod();
+            this.callbackProcessingMethod({ text: "找到了：" + this.packageli[0], link: `https://t.bilibili.com/${this.packageli[0]}` });
             return
         }
     }
@@ -266,8 +266,8 @@ class SpaceManage extends base_mob.blhttps {
 
         #temporLi = []
 
-        constructor(lastday) {
-            this.ld = lastday
+        constructor(rid) {
+            this.riDynamic = rid
         }
 
         /**
@@ -307,7 +307,7 @@ class SpaceManage extends base_mob.blhttps {
         async infoExtract(apck) {
             let li = apck.map(v => this.infoIndiv(v))
             for (let i of li) {
-                if (i.rdid == "678854211508633640") {
+                if (i.rdid == this.riDynamic) {
                     this.#temporLi.push(i.did);
                     throw "找到了"
                 }
