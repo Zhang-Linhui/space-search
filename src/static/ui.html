@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>漂亮的公告面板</title>
+    <!-- 引入Bootstrap样式文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <!-- 引入jQuery UI样式文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <style>
+        /* 自定义样式 */
+        .btn-group-center {
+            display: flex;
+            justify-content: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: #ff7f50;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        .card-header {
+            background-color: #ff7f50;
+            color: #fff;
+            font-weight: bold;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .card-body {
+            height: 300px;
+            overflow-y: scroll;
+            background-color: #f0e68c;
+        }
+
+        .card-body ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card-body li {
+            padding: 5px 0;
+            border-bottom: 1px solid #fff;
+            text-align: center;
+            color: #000;
+        }
+
+        .card-body li:last-child {
+            border-bottom: none;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            background-color: #ff7f50;
+            border-color: #ff7f50;
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            background-color: #ff6347;
+            border-color: #ff6347;
+        }
+
+        /* 隐藏输入框中的增减按钮 */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card" id="draggable-panel">
+                    <div class="card-header">公告</div>
+                    <div class="card-body">
+                        <ul id="announcement-list">
+                        </ul>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" class="form-control text-center" placeholder="请输入数字" aria-label="数字输入框"
+                            aria-describedby="basic-addon1">
+                    </div>
+                    <div class="btn-group btn-group-lg btn-group-center" role="group">
+                        <button type="button" class="btn btn-primary mr-2" id="button1">按钮1</button>
+                        <button type="button" class="btn btn-secondary" id="button2">按钮2</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 引入Bootstrap JavaScript文件 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+    <!-- 引入jQuery UI库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        function addAnnouncement(announcement, link) {
+            var announcementList = document.getElementById("announcement-list");
+            var li = document.createElement("li");
+            li.innerHTML = announcement;
+            if (link) {
+                var a = document.createElement("a");
+                a.href = link;
+                a.target = "_blank";
+                a.appendChild(li);
+                li = a;
+            }
+            announcementList.appendChild(li);
+        }
+        addAnnouncement("公告1", "https://www.baidu.com");
+        addAnnouncement("公告2");
+
+        // 设置公告面板为可拖动
+        $(function () {
+            $("#draggable-panel").draggable();
+        });
+
+        $(document).ready(function () {
+            // 获取标题、内容面板和按钮部分元素
+            const $cardHeader = $(".card-header");
+            const $cardBody = $(".card-body");
+            const $btnGroup = $(".btn-group");
+
+            // 双击标题切换内容面板和按钮部分的显示状态
+            $cardHeader.dblclick(function () {
+                $cardBody.toggle();
+                $btnGroup.toggle();
+            });
+
+            // 按钮1点击事件
+            let button1Clicked = false;
+            $("#button1").click(function () {
+                if (!button1Clicked) {
+                    console.log("hello")
+                } else {
+                    const inputValue = $(".form-control").val() || "没有输入";
+                    addAnnouncement(inputValue);
+                }
+                button1Clicked = !button1Clicked;
+            });
+
+            // 按钮2点击事件
+            let button2Clicked = false;
+            $("#button2").click(function () {
+                if (!button2Clicked) {
+                    console.log("hello")
+                } else {
+                    $("#announcement-list").empty();
+                }
+                button2Clicked = !button2Clicked;
+            });
+
+        });
+    </script>
+</body>
+
+</html>

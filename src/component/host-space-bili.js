@@ -1,9 +1,11 @@
 import loadBiliButton from "../static/bili-button-html"
-import bindBiliButtonClick from "../event/bili-button-click";
+
+import updateSpaceHostPanel from "../event/panel-host-space-update";
+import searchSpaceHost from "../event/host-space-search";
 
 
 export default () => {
     loadBiliButton();
-    bindBiliButtonClick();
-
+    updateSpaceHostPanel()
+    searchSpaceHost()
 }

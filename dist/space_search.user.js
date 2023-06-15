@@ -6,49 +6,24 @@
 // @icon       https://static.hdslb.com/images/favicon.ico
 // @updateURL  https://gitee.com/ZLH2021/bili-space-search/raw/main/dist/space_search.user.js
 // @include    /^http?s:\/\/space\.bilibili\.com\/[\d]+\/dynamic$/
-// @resource   bootstrap/dist/css/bootstrap.min.css  https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css
+// @require    https://cdn.bootcdn.net/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js
+// @require    https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js
+// @resource   bootstrap/dist/css/bootstrap.min.css    https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css
+// @resource   jquery-ui/themes/base/autocomplete.css  https://cdn.jsdelivr.net/npm/jquery-ui@1.12.1/themes/base/autocomplete.css
 // @grant      GM_getResourceText
 // ==/UserScript==
 
-(t=>{const e=document.createElement("style");e.dataset.source="vite-plugin-monkey",e.textContent=t,document.head.append(e)})(" #bili-zlh-button{position:fixed;top:70%;left:80%;z-index:1000} ");
+(e=>{const o=document.createElement("style");o.dataset.source="vite-plugin-monkey",o.textContent=e,document.head.append(o)})(" #panel-space-bili{position:fixed;top:70%;left:80%;z-index:1000}.btn-group-center{display:flex;justify-content:center;padding-top:10px;padding-bottom:10px;background-color:coral}#panel-space-bili{max-width:600px}.card-header{background-color:coral;color:#fff;font-weight:700;font-size:24px;text-align:center}.card-body{height:300px;overflow-y:scroll;background-color:khaki}.card-body ul{list-style:none;margin:0;padding:0}.card-body li{padding:5px 0;border-bottom:1px solid #fff;text-align:center;color:#000}.card-body li:last-child{border-bottom:none}.btn-primary,.btn-secondary{background-color:coral;border-color:coral}.btn-primary:hover,.btn-secondary:hover{background-color:tomato;border-color:tomato}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0} ");
 
 (function () {
   'use strict';
 
-  var __defProp = Object.defineProperty;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-  var __publicField = (obj, key, value) => {
-    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-    return value;
-  };
-  var __accessCheck = (obj, member, msg) => {
-    if (!member.has(obj))
-      throw TypeError("Cannot " + msg);
-  };
-  var __privateGet = (obj, member, getter) => {
-    __accessCheck(obj, member, "read from private field");
-    return getter ? getter.call(obj) : member.get(obj);
-  };
-  var __privateAdd = (obj, member, value) => {
-    if (member.has(obj))
-      throw TypeError("Cannot add the same private member more than once");
-    member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
-  };
-  var __privateSet = (obj, member, value, setter) => {
-    __accessCheck(obj, member, "write to private field");
-    setter ? setter.call(obj, value) : member.set(obj, value);
-    return value;
-  };
-  var __privateMethod = (obj, member, method) => {
-    __accessCheck(obj, member, "access private method");
-    return method;
-  };
-  var _hublist, _getHub, getHub_fn, _temporLi, _a, _key, _spHandle, _mainloop, mainloop_fn;
   const cssLoader = (e) => {
     const t = GM_getResourceText(e), o = document.createElement("style");
     return o.innerText = t, document.head.append(o), t;
   };
   cssLoader("bootstrap/dist/css/bootstrap.min.css");
+  cssLoader("jquery-ui/themes/base/autocomplete.css");
   const gongjv = {
     give: {
       getDate: () => (/* @__PURE__ */ new Date()).getFullYear() + ((/* @__PURE__ */ new Date()).getMonth() + 1 < 10 ? "0" : "") + ((/* @__PURE__ */ new Date()).getMonth() + 1) + ((/* @__PURE__ */ new Date()).getDate() < 10 ? "0" : "") + (/* @__PURE__ */ new Date()).getDate(),
@@ -71,330 +46,79 @@
       }
     }
   };
-  class HubManage {
-    /**
-     * 基础类
-     * @param  {...any} arge 选择要加入的库,规定字符串为要加入的自带库
-     */
-    constructor(...arge) {
-      __privateAdd(this, _getHub);
-      __privateAdd(this, _hublist, []);
-      __publicField(this, "store_huose", {
-        csshub: {
-          base_conf: () => "cursor:pointer;\n-webkit-user-select: none;\n-moz-user-select: none;\n-ms-user-select: none;\nuser-select': none;\nz-index:100000;\ntext-align:center;",
-          space_css: () => `
-                <style type="text/css">
-                .css_btn_class {
-                    ${this.store_huose.k_css.base_conf()}
-                    width:60px;
-                    font-size:16px;
-                    font-family:Arial;
-                    font-weight:normal;
-                    -moz-border-radius:8px;
-                    -webkit-border-radius:8px;
-                    border-radius:8px;
-                    border:1px solid #3866a3;
-                    padding:8px 9px;
-                    text-decoration:none;
-                    background:-webkit-gradient( linear, left top, left bottom, color-stop(102%, #63b8ee), color-stop(3%, #468ccf) );
-                    background:-moz-linear-gradient( center top, #63b8ee 102%, #468ccf 3% );
-                    background:-ms-linear-gradient( top, #63b8ee 102%, #468ccf 3% );
-                    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf');
-                    background-color:#63b8ee;
-                    color:#14396a;
-                    display:inline-block;
-                    text-shadow:1px -7px 0px #7cacde;
-                    -webkit-box-shadow:inset 1px 0px 20px 3px #bee2f9;
-                    -moz-box-shadow:inset 1px 0px 20px 3px #bee2f9;
-                    box-shadow:inset 1px 0px 20px 3px #bee2f9;
-                }.css_btn_class:hover {
-                    background:-webkit-gradient( linear, left top, left bottom, color-stop(102%, #468ccf), color-stop(3%, #63b8ee) );
-                    background:-moz-linear-gradient( center top, #468ccf 102%, #63b8ee 3% );
-                    background:-ms-linear-gradient( top, #468ccf 102%, #63b8ee 3% );
-                    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee');
-                    background-color:#468ccf;
-                }.css_btn_class:active {
-                    position:relative;
-                    top:1px;
-                }
-                </style>
-`
-        },
-        httphub: {
-          rmDynamic: (dth) => ({
-            url: "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/rm_dynamic",
-            data: {
-              dynamic_id: dth,
-              csrf_token: gongjv.give.getJct(),
-              csrf: gongjv.give.getJct()
-            },
-            type: "post"
-          }),
-          getAttentionlist: () => ({
-            url: "https://api.vc.bilibili.com/feed/v1/feed/get_attention_list",
-            data: {
-              uid: gongjv.give.getUid()
-            },
-            type: "get"
-          }),
-          rmUid: (tuid) => ({
-            url: "https://api.bilibili.com/x/relation/modify",
-            data: {
-              fid: tuid,
-              act: 2,
-              re_src: 11,
-              jsonp: "jsonp",
-              csrf: gongjv.give.getJct()
-            },
-            type: "post"
-          }),
-          getAttentionGroup: () => ({
-            url: "https://api.bilibili.com/x/relation/tags",
-            type: "get"
-          }),
-          getAttentionPage: (pn, tagid = -10) => ({
-            url: "https://api.bilibili.com/x/relation/tag",
-            data: {
-              mid: gongjv.give.getUid(),
-              tagid,
-              pn,
-              ps: 50
-            },
-            type: "get"
-          }),
-          getSpaceHistory: (host_uid, offset_dynamic_id = 0) => ({
-            url: "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history",
-            data: {
-              visitor_uid: gongjv.give.getUid(),
-              offset_dynamic_id,
-              host_uid,
-              need_top: 1
-            },
-            type: "get"
-          })
-        }
-      });
-      arge.forEach((v) => {
-        if (typeof v == "string") {
-          let k = this.store_huose[v];
-          if (k == void 0)
-            throw "请输入正确的库名";
-          __privateGet(this, _hublist).push(k);
-        } else
-          __privateGet(this, _hublist).push(v);
-      });
-    }
-    get(name) {
-      let t = __privateMethod(this, _getHub, getHub_fn).call(this, name);
-      return t[name];
-    }
-  }
-  _hublist = new WeakMap();
-  _getHub = new WeakSet();
-  getHub_fn = function(name) {
-    let ku = Object.values(__privateGet(this, _hublist)).find((va, ii) => {
-      return va[name] != void 0;
-    }) ?? (() => {
-      throw "找不到库" + name;
-    })();
-    return ku;
-  };
-  const base_mob = {
-    blhttps: class {
-      constructor() {
-        __publicField(this, "kum", new HubManage("httphub"));
-        __publicField(this, "_all_data", null);
-      }
-      z_ajax(all_data) {
-        let er = (res) => {
-          $.ajax({
-            ...all_data,
-            xhrFields: { withCredentials: true },
-            dataType: "json",
-            success: (data) => {
-              console.log(data);
-              if (!data.message || data.message == "0" || data.message == "success") {
-                res(data.data);
-              } else {
-                console.log(data.message);
-                res(0);
-              }
-            }
-          });
-        };
-        return gongjv.action.setPromise(er);
-      }
-      blajax(type, url, data = {}) {
-        return this.z_ajax({ type, url, data });
-      }
-      blget(...a) {
-        return this.blajax("get", ...a);
-      }
-      blpost(...a) {
-        return this.blajax("post", ...a);
-      }
-      async dataGet() {
-        if (this._all_data == null) {
-          throw "请重写该#all_data";
-        }
-        return await this.z_ajax(this._all_data);
-      }
-    }
-  };
-  class SpaceManage extends base_mob.blhttps {
-    /**
-     * 空间循环类
-     * @param {string} hd 搜索的空间主人uid
-     * @param {number} ld
-     */
-    constructor(cPM = () => {
-      console.log("执行完毕");
-    }, hd = gongjv.give.getUid(), ld = 60) {
-      super();
-      /**
-       * 主循环
-       */
-      __privateAdd(this, _mainloop);
-      /**符合条件的数据合集*/
-      __publicField(this, "packageli", []);
-      /**循环状态量 */
-      __privateAdd(this, _key, true);
-      /**生成器权柄 */
-      __privateAdd(this, _spHandle, void 0);
-      /**接受数据包的量 */
-      __publicField(this, "sp_count", 0);
-      /**
-      * 单独的十次数据处理
-      */
-      __publicField(this, "dataArrange", (_a = class {
-        constructor(lastday) {
-          __privateAdd(this, _temporLi, []);
-          this.ld = lastday;
-        }
-        /**
-         *
-         * @param {object} data 单独一次的原始的data数据
-         * @returns offset
-         */
-        async dataAct(data) {
-          let off = this.infoJudge(data);
-          await this.infoExtract(data.cards);
-          return off;
-        }
-        /**
-         * 最终数据的获取
-         */
-        get data() {
-          return __privateGet(this, _temporLi);
-        }
-        /**
-         *提取需要的值
-         * @param {object} 单独的space-desc值
-         * @returns object
-         */
-        infoIndiv({ extra: { is_space_top: top }, desc: { dynamic_id_str: did, origin, previous, timestamp: ti } }) {
-          let { status: exi, uid, dynamic_id_str: rdid } = previous ?? origin ?? { uid: gongjv.give.getUid(), status: 1, dynamic_id_str: "123456" };
-          return { top, did, ti, exi, uid, rdid };
-        }
-        /**
-         * 提取和处理相关变量
-         * @param {object} apck
-         */
-        async infoExtract(apck) {
-          let li = apck.map((v) => this.infoIndiv(v));
-          for (let i of li) {
-            if (i.rdid == "678854211508633640") {
-              __privateGet(this, _temporLi).push(i.did);
-              throw "找到了";
-            }
-          }
-        }
-        /**
-         *判断是否停止
-         * @param {object} packa
-         * @returns string
-         */
-        infoJudge(packa) {
-          if (packa.has_more != 1)
-            throw "";
-          return packa.next_offset;
-        }
-      }, _temporLi = new WeakMap(), _a));
-      this.lastday = ld;
-      this.hid = hd;
-      __privateSet(this, _spHandle, __privateMethod(this, _mainloop, mainloop_fn).call(this));
-      this.callbackProcessingMethod = cPM;
-    }
-    async start() {
-      __privateSet(this, _key, true);
-      return await __privateGet(this, _spHandle).next();
-    }
-    stop() {
-      __privateSet(this, _key, false);
-    }
-    /**
-     *
-     * @param {string} off 输入值
-     * @returns 原装变量
-     */
-    async spaceGet(off) {
-      let data = await this.z_ajax(this.kum.get("getSpaceHistory")(this.hid, off));
-      return data;
-    }
-  }
-  _key = new WeakMap();
-  _spHandle = new WeakMap();
-  _mainloop = new WeakSet();
-  mainloop_fn = async function* () {
-    let off = "0";
-    let dalist = new this.dataArrange(this.lastday);
-    try {
-      while (true) {
-        let data = await this.spaceGet(off);
-        console.log("数据包: " + ++this.sp_count);
-        let off_b = off;
-        off = await dalist.dataAct(data);
-        if (off_b == off)
-          throw "";
-        if (!__privateGet(this, _key))
-          throw "";
-      }
-    } catch (error) {
-      console.log(error);
-      this.packageli = dalist.data;
-      console.log("找到了");
-      console.log(this.packageli);
-      console.log(this.callbackProcessingMethod);
-      this.callbackProcessingMethod();
-      return;
-    }
-  };
   function loadBiliButton() {
-    $("body").append(`
-    <button type="button" id="bili-zlh-button" class="btn btn-primary btn-lg">开始执行</button>`);
+    let htmlHostSpace = `
+   <div class="container" id="panel-space-bili">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card" id="draggable-panel">
+                    <div class="card-header">公告</div>
+                    <div class="card-body">
+                        <ul id="announcement-list">
+                        </ul>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" class="form-control text-center" placeholder="请输入数字" aria-label="数字输入框"
+                            aria-describedby="basic-addon1">
+                    </div>
+                    <div class="btn-group btn-group-lg btn-group-center" role="group">
+                        <button type="button" class="btn btn-primary mr-2" id="button1">按钮1</button>
+                        <button type="button" class="btn btn-secondary" id="button2">按钮2</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        `;
+    $("body").append(htmlHostSpace);
   }
   const bindBiliButtonClick = () => {
-    let btnCPM = () => {
-      $("#bili-zlh-button").text("开始执行");
-      spaceSearch = new SpaceManage(btnCPM);
-    };
-    let spaceSearch = new SpaceManage(btnCPM);
-    $(document).on("click", "#bili-zlh-button", function(e) {
-      if ($(this).text() == "开始执行") {
-        spaceSearch.start();
-        $(this).text("执行中");
+    function addAnnouncement(announcement, link) {
+      var li = document.createElement("li");
+      var announcementList = document.getElementById("announcement-list");
+      li.innerHTML = announcement;
+      if (link) {
+        var a = document.createElement("a");
+        a.href = link;
+        a.target = "_blank";
+        a.appendChild(li);
+        announcementList.appendChild(a);
       } else {
-        spaceSearch.stop();
-        $(this).text("开始执行");
+        announcementList.appendChild(li);
       }
+    }
+    addAnnouncement("公告1", "https://www.baidu.com");
+    addAnnouncement("公告2");
+    $(function() {
+      $("#draggable-panel").draggable();
     });
-    $(document).on("click", "#navigator .n-tab-links .n-btn", function() {
-      console.log("wwwww");
-      if ($("#navigator .n-tab-links a.active").hasClass("n-dynamic")) {
-        $("#bili-zlh-button").show();
-      } else {
-        $("#bili-zlh-button").hide();
-      }
+    $(document).ready(function() {
+      const $cardHeader = $(".card-header");
+      const $cardBody = $(".card-body");
+      const $btnGroup = $(".btn-group");
+      $cardHeader.dblclick(function() {
+        $cardBody.toggle();
+        $btnGroup.toggle();
+      });
+      let button1Clicked = false;
+      $("#button1").click(function() {
+        if (!button1Clicked) {
+          console.log("hello");
+        } else {
+          const inputValue = $(".form-control").val() || "没有输入";
+          addAnnouncement(inputValue);
+        }
+        button1Clicked = !button1Clicked;
+      });
+      let button2Clicked = false;
+      $("#button2").click(function() {
+        if (!button2Clicked) {
+          console.log("hello");
+        } else {
+          $("#announcement-list").empty();
+        }
+        button2Clicked = !button2Clicked;
+      });
     });
   };
   const loadHostSpaceBili = () => {
